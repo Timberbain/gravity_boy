@@ -1,8 +1,9 @@
-import pygame
+from pygame import *
 
-class Ball():
+class Ball(sprite.Sprite):
 
     def __init__(self, x, y, dx, dy, r=5, mag=1, color=(255,0,0), surface = None):
+        sprite.Sprite.__init__(self)
         
         self.surface = surface
         self.x = x
@@ -14,13 +15,18 @@ class Ball():
         self.color = color
         self.colliding = False
 
+        self.image = None
+        self.rect = None
+
         if self.surface == None:
             self.__create_surface()
 
+    def update():
+        pass
 
     def __create_surface(self):
         """ Create a surface for the ball
         """
-        self.surface = pygame.Surface((self.r*2,self.r*2)).convert()
+        self.surface = Surface((self.r*2,self.r*2)).convert()
         self.surface.set_colorkey((0,0,0))
-        pygame.draw.circle(self.surface, self.color, (self.r,self.r), self.r)
+        draw.circle(self.surface, self.color, (self.r,self.r), self.r)

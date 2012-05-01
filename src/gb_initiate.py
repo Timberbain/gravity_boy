@@ -1,6 +1,5 @@
 import pygame
 from hero import *
-from villan import *
 from gb_space import *
 import random
 
@@ -17,7 +16,6 @@ class gb_model():
         self.keyright = False
         self.villans = []
         self.hero = None
-        self.gameobjects = pygame.sprite.RenderPlain()
 
         self.villan_prob = 0.001                #probability that a villan will spawn each frame
         self.level = 1
@@ -31,7 +29,7 @@ class gb_model():
         v_mag = 5
         v_color = (255,0,0)
         
-        villan = Villan(random.random()*(self.frame_width-vrad*diff), -vrad, 
+        villan = Ball(random.random()*(self.frame_width-vrad*diff), -vrad, 
                           random.random()*v_dx*diff - v_dx/2, random.random()*v_dy*diff+1, 
                           vrad*diff, v_mag*diff, v_color)
         self.villans.append(villan)
@@ -45,8 +43,7 @@ class gb_model():
     def set_hero(self):
         """ Creates the hero with default values
         """
-        self.hero = Hero((self.frame_width, self.frame_height),self.frame_width/2, self.frame_height/2, 0, 0, 15, 1, (0,255,0))
-        self.gameobjects.add(self.hero)
+        self.hero = Hero(self.frame_width/2, self.frame_height/2, 0, 0, 15, 1, (0,255,0))
 
     def set_background(self):
         """ Creates the background
@@ -100,8 +97,13 @@ class gb_model():
             if self.hero.dx > -self.hero.max_ax:
                 self.hero.dx -= 0.5
 
-        self.hero.move()
-             
+        if self.hero.x < 0 or self.hero.x + self.hero.r*2 > self.frame_width:
+            self.hero.dx *= -1
+        if self.hero.y < 0 or self.hero.y + self.hero.r*2 > self.frame_height:
+            self.hero.dy *= -1
+
+        self.hero.x += self.hero.dx
+        self.hero.y += self.hero.dy                
 
     def check_collision(self, a, b):
         """ Check if there has been any collision between object a and b

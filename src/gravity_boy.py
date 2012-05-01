@@ -32,7 +32,9 @@ def main():
         model.update_model()
 
         screen.blit(model.background.surface, (0,0))
-        screen.blit(model.hero.surface, (model.hero.x, model.hero.y))
+
+        model.gameobjects.draw(screen)
+        #screen.blit(model.hero.surface, (model.hero.x, model.hero.y))
         for v in model.villans:
             screen.blit(v.surface, (v.x, v.y))
 
