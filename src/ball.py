@@ -12,6 +12,7 @@ class Ball():
         self.r = r
         self.mag = mag
         self.color = color
+        self.colliding = False
 
         if self.surface == None:
             self.__create_surface()

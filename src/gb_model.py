@@ -108,9 +108,13 @@ class gb_model():
     def check_collision(self, a, b):
         """ Check if there has been any collision between object a and b
         """
-        distance = math.sqrt(math.pow((a.x+a.r + a.dx) - (b.x+b.r + b.dx),2) +
-								math.pow((a.y+a.r + a.dy)-(b.y+b.r + b.dx),2))
-        if distance <= (b.r + a.r):
+
+        dis_x = abs((a.x+a.r + a.dx)-(b.x+b.r + b.dx))
+        dis_y = abs((a.y+a.r + a.dy)-(b.y+b.r + b.dy))
+        distance = math.sqrt(dis_x*dis_x + dis_y*dis_y)
+
+        if distance <= (b.r + a.r) and (a.colliding == False or b.colliding == False):
+
             return True
 
     def collision(self, a, b):
@@ -121,16 +125,18 @@ class gb_model():
         hippo = math.sqrt(kata*kata + katb*katb)
         angle = math.asin(kata/hippo)
 
-        ux = a.dx*math.cos(-angle) - a.dy*math.sin(-angle)
+        ux = a.dx*math.cos(-angle) - a.dy*math.sin(-angle)      #Rotation
         uy = a.dx*math.sin(-angle) + a.dy*math.cos(-angle)
 
         bux = b.dx*math.cos(-angle) - b.dy*math.sin(-angle)
         buy = b.dx*math.sin(-angle) + b.dy*math.cos(-angle)
 
-        aux =  (ux*(a.mag-b.mag)+2*b.mag*bux)/(a.mag+b.mag)
+        aux =  (ux*(a.mag-b.mag)+2*b.mag*bux)/(a.mag+b.mag)     #Calculate Velocity
         abux = (bux*(b.mag-a.mag)+2*a.mag*ux)/(b.mag+a.mag)
-        b.dx = abux*math.cos(angle) - buy*math.sin(angle)
+
+        b.dx = abux*math.cos(angle) - buy*math.sin(angle)       #Rotation back
         b.dy = abux*math.sin(angle) + buy*math.cos(angle)
 
         a.dx = aux*math.cos(angle) - uy*math.sin(angle)
         a.dy = aux*math.sin(angle) + uy*math.cos(angle)
+
