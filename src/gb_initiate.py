@@ -6,7 +6,7 @@ import random
 class gb_model():
 
 
-    def __init__(self):
+    def __init__(self, frame_width, frame_height):
         
         self.frame_width = 800#640
         self.frame_height = 600#480

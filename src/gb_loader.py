@@ -5,8 +5,8 @@ import os
 class Loader():
 
     @staticmethod
-    def load_image(name, colorkey=None):
-        fullname = os.path.join('anime', name)
+    def load_image(path ,name, colorkey=None):
+        fullname = os.path.join(path, name)
         try:
             image = pygame.image.load(fullname)
         except pygame.error, message:

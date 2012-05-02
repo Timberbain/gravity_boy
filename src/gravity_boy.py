@@ -3,15 +3,12 @@ from ball import *
 from hero import *
 from gb_model import *
 from gb_space import *
-
-
+from gb_view import *
 
 
 def main():
     pygame.init()
 
-    screen = pygame.display.set_mode((model.frame_width,model.frame_height))
-    
     model.set_background()
     model.set_hero()
     model.generate_villan()
@@ -30,15 +27,7 @@ def main():
             check_movement(event)
 
         model.update_model()
-
-        screen.blit(model.background.surface, (0,0))
-
-        model.gameobjects.draw(screen)
-        #screen.blit(model.hero.surface, (model.hero.x, model.hero.y))
-        for v in model.villans:
-            screen.blit(v.surface, (v.x, v.y))
-
-        pygame.display.flip()
+        view.draw()
 
 
 def check_movement(event):
@@ -67,5 +56,6 @@ def check_movement(event):
             model.keyleft = False
 
 if __name__ == "__main__":
-    model = gb_model()
+    model = Gb_model(800, 600)
+    view = Gb_view(model)
     main()

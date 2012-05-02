@@ -4,13 +4,13 @@ from villan import *
 from gb_space import *
 import random
 
-class gb_model():
+class Gb_model():
 
 
-    def __init__(self):
+    def __init__(self, frame_width, frame_height):
         
-        self.frame_width = 800#640
-        self.frame_height = 600#480
+        self.frame_width = frame_width#800#640
+        self.frame_height = frame_height#600#480
         self.keydown = False
         self.keyup = False
         self.keyleft = False
@@ -31,7 +31,7 @@ class gb_model():
         v_mag = 5
         v_color = (255,0,0)
         
-        villan = Villan(random.random()*(self.frame_width-vrad*diff), -vrad, 
+        villan = Villan((self.frame_width, self.frame_height), random.random()*(self.frame_width-vrad*diff), -vrad, 
                           random.random()*v_dx*diff - v_dx/2, random.random()*v_dy*diff+1, 
                           vrad*diff, v_mag*diff, v_color)
         self.villans.append(villan)
@@ -45,13 +45,18 @@ class gb_model():
     def set_hero(self):
         """ Creates the hero with default values
         """
-        self.hero = Hero((self.frame_width, self.frame_height),self.frame_width/2, self.frame_height/2, 0, 0, 15, 1, (0,255,0))
+        self.hero = Hero((self.frame_width, self.frame_height),self.frame_width/2, self.frame_height/2, 0, 0, 30, 1, (0,255,0))
         self.gameobjects.add(self.hero)
 
     def set_background(self):
         """ Creates the background
         """
         self.background = Gb_space(self.frame_width, self.frame_height)
+
+    def set_screen(self, screen):
+        """
+        """
+        self.screen = screen
 
     def update_model(self):
         """The big update
@@ -62,6 +67,10 @@ class gb_model():
         self.update_villan_movement()
         self.roll_for_villan()
         self.villan_prob += 0.00005
+        self.gameobjects.update()
+
+
+
 
     def update_villan_movement(self):
         """updates the movement and check for collision of all villans
@@ -85,7 +94,7 @@ class gb_model():
         for v in self.villans:
             if self.check_collision(self.hero, v):
                 self.collision(self.hero, v)
-
+                #self.hero.r +=1
 
         if self.keyup:
             if self.hero.dy > -self.hero.max_ax:
@@ -107,11 +116,15 @@ class gb_model():
         """ Check if there has been any collision between object a and b
         """
 
-        dis_x = abs((a.x+a.r + a.dx)-(b.x+b.r + b.dx))
-        dis_y = abs((a.y+a.r + a.dy)-(b.y+b.r + b.dy))
-        distance = math.sqrt(dis_x*dis_x + dis_y*dis_y)
+        #dis_x = abs((a.x+a.r + a.dx)-(b.x+b.r + b.dx))
+        #dis_y = abs((a.y+a.r + a.dy)-(b.y+b.r + b.dy))
+        dis_x = a.x - b.x
+        dis_y = a.y - b.y
+        distance = dis_x*dis_x + dis_y*dis_y
 
-        if distance <= (b.r + a.r) and (a.colliding == False or b.colliding == False):
+        min_distance = (b.r + a.r)
+
+        if distance <= min_distance * min_distance:
 
             return True
 
