@@ -1,6 +1,5 @@
 import pygame
 from ball import *
-from gb_loader import *
 
 class Hero(Ball):
 
@@ -43,9 +42,9 @@ class Hero(Ball):
         self.image = pygame.transform.scale(self.image, (self.r*2, self.r*2))
         
     def move(self):
-        if self.x < 0 or self.x + self.r*2 > self.frame_width:
+        if self.x - self.r < 0 or self.x + self.r > self.frame_width:
             self.dx *= -1
-        if self.y < 0 or self.y + self.r*2 > self.frame_height:
+        if self.y - self.r < 0 or self.y + self.r > self.frame_height:
             self.dy *= -1
 
         self.x += self.dx

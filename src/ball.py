@@ -1,5 +1,7 @@
 from pygame import *
 from enum import *
+from gb_loader import *
+
 
 class Ball(sprite.Sprite):
 
@@ -20,6 +22,7 @@ class Ball(sprite.Sprite):
 
         self.image = None
         self.rect = None
+        self.radius = r*2
 
         self.direction = Direction.NONE
 
